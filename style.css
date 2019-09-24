@@ -1,0 +1,16 @@
+body {
+background-color: #ff5511;
+
+}
+
+.hide {
+display: none;
+
+}
+
+.car {
+    width: 50px;
+    height: 109px;
+    background: transparent url('./image/car2.png') center / cover no-repeat;
+
+}
