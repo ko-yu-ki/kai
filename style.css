@@ -52,6 +52,7 @@ table {
 body {
     background-color: rgb(226, 240, 195);
     color: #77aa22;
+    overflow:hidden;
 }
 
 .hide {
@@ -63,8 +64,7 @@ body {
     width: 50px;
     height: 112px;
     position: absolute;
-    left: 125px;
-    bottom: 10px;
+   
     z-index: 100;
     /* чтобы линия не шла поверх машинки */
 }
@@ -83,6 +83,9 @@ body {
     height: 100%;
     position: relative;
     margin: auto;
+    /*
+    margin-top: 6rem; чтобы не заезжало за кнопку, но тогда заезжает за низ
+    */
     background: rgb(66, 66, 66);
     overflow: hidden;
 }
@@ -96,4 +99,37 @@ body {
     z-index: 10;
     /* чтобы линия не шла поверх машинки */
 
+}
+
+button {
+    position:absolute;
+    left:0;
+    top: 0;
+    width:100%;
+    padding: 2rem 0;
+    text-align: center;
+    z-index: 200;
+    color: #fff;
+    font-size: 1.5rem;
+    background: black;
+    cursor: pointer;
+    font-family: sans-serif;
+    font-weight: 700;
+}
+
+.score {
+    position:absolute;
+    left:0;
+    top: 100;
+    padding: 1rem 0.5rem;
+    width:25%;
+    z-index: 300;
+    background: black;
+    border: solid 2px  skyblue;
+    color: skyblue;
+    font-size: 1.5rem;
+    text-align: center;
+    font-family: sans-serif;
+    font-weight: 500;
+    
 }

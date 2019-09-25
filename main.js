@@ -36,15 +36,17 @@ function getQuantityElements(heightElement) { // вычисляем скольк
 
 
 function startStopGame(){
-   
+       
 
     if (startStop.textContent === 'Старт!'){ //мой тюнинг
         startStop.textContent = 'Стоп!';        //мой тюнинг
+        gameArea.innerHTML=''; // очистка "дороги" от всего, что внутри
+       
         
-        setting.start = true;
         
         car.classList.remove('hide'); //мой тюнинг
-        gameArea.appendChild(car);
+       
+        
 
         for (let i = 0; i < getQuantityElements(100); i++) {      // добавляем полоски на дорогу
                                                             //console.log(car.offsetHeight); почему не берет высоту???
@@ -65,7 +67,13 @@ function startStopGame(){
             enemy.style.background = 'transparent url(./image/enemy'+ carStyle +'.png) center / cover no-repeat';
             gameArea.appendChild(enemy);
         }
-        
+
+        setting.score = 0;
+        setting.start = true;
+        gameArea.appendChild(car);
+        car.style.left = (gameArea.offsetWidth/2)-(car.offsetWidth/2)+'px';
+        car.style.top = 'auto';
+        car.style.bottom = '100px';
         setting.x = car.offsetLeft;
         setting.y = car.offsetTop;
         requestAnimationFrame(playGame); // запрос анимации функции в скобках на следующем кадре
@@ -74,6 +82,8 @@ function startStopGame(){
         startStop.textContent = 'Старт!';    //мой тюнинг
         setting.start = false;               //мой тюнинг
         car.classList.add('hide');           //мой тюнинг
+        
+        gameArea.innerHTML='';
     }
 }
 
@@ -81,6 +91,8 @@ function startStopGame(){
 function playGame(){
 
     if (setting.start){
+        setting.score+=setting.speed; 
+        score.innerHTML = 'Score<br>' + setting.score;
         moveRoad();
         moveEnemy();
         if (keys.ArrowLeft && setting.x > 0) {
@@ -93,7 +105,7 @@ function playGame(){
         if (keys.ArrowDown && setting.y < (gameArea.offsetHeight - car.offsetHeight)) {
             setting.y+=setting.speed;
         }
-        if (keys.ArrowUp && setting.y > 0) {
+        if (keys.ArrowUp && setting.y > 95) { //из-за кнопки старт здесь не ноль, а 95
             setting.y-=setting.speed;
         }
 
@@ -136,6 +148,19 @@ function moveEnemy(){
     let enemy = document.querySelectorAll('.enemy');
 
     enemy.forEach (function(item, i){
+        let carRect = car.getBoundingClientRect(); // получаем прямоугольник машинки
+        let enemyRect = item.getBoundingClientRect(); // получаем прямоугольники врагов
+        
+        if ((carRect.top <= enemyRect.bottom)&&   
+            (carRect.left<=enemyRect.right)&&
+            (carRect.right>=enemyRect.left)&&
+            (carRect.bottom >= enemyRect.top)) {
+            startStop.textContent = 'Старт!';    //мой тюнинг
+            setting.start = false;    
+            console.warn('crash');
+           // startStop.classlist.remove('hide'); // если убирать мой тюнинг про старт и стоп
+           // startStop.style.top = score.offsetHeight; // если убирать мой тюнинг про старт и стоп
+        }
         item.y += setting.speed / 2;
         item.style.top = item.y +'px';
         if (item.y >= document.documentElement.clientHeight) {
